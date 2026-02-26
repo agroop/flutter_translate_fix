@@ -1,5 +1,5 @@
 name: example
-description: Example project for the flutter_translate library
+description: Example project for the flutter_translate_fix library
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.1.0
 
@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_translate:
+  flutter_translate_fix:
     path: ../
 
 flutter:

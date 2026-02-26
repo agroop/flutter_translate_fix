@@ -1,4 +1,4 @@
-library flutter_translate;
+library flutter_translate_fix;
 
 export 'src/delegates/localization_delegate.dart';
 export 'src/interfaces/translate_preferences.dart';
