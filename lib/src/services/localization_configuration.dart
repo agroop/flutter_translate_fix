@@ -44,7 +44,7 @@ class LocalizationConfiguration {
   static List<Locale> _generateSupportedLocales(
       List<String> supportedLanguages) {
     return supportedLanguages
-        .map((x) => localeFromString(x, languageCodeOnly: true))
+        .map((x) => localeFromString(x))
         .toSet()
         .toList();
   }

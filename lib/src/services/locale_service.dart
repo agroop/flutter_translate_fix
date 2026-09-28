@@ -31,7 +31,9 @@ class LocaleService {
     Locale locale,
     Map<Locale, String> supportedLocales,
   ) async {
-    final file = supportedLocales[locale];
+    final matchedLocale =
+        findLocale(locale, supportedLocales.keys.toList()) ?? locale;
+    final file = supportedLocales[matchedLocale];
     if (file == null) return {};
 
     final content = await LocaleFileService.getLocaleContent(file);

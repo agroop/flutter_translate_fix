@@ -21,21 +21,29 @@ class LocaleFileService {
   }
 
   static Future<String?> getLocaleContent(String file) async {
-    final data = await rootBundle.load(file);
-    final bytes = data.buffer.asUint8List();
+    try {
+      final data = await rootBundle.load(file);
+      final bytes = data.buffer.asUint8List();
 
-    if (bytes.isEmpty) return null;
+      if (bytes.isEmpty) return null;
 
-    return utf8.decode(bytes);
+      return utf8.decode(bytes);
+    } catch (_) {
+      return null;
+    }
   }
 
   static Future<List<String>> _getAllLocaleFiles(String basePath) async {
-    final assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
-    final assets = assetManifest.listAssets();
+    try {
+      final assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+      final assets = assetManifest.listAssets();
 
-    final separator = basePath.endsWith('/') ? '' : '/';
+      final separator = basePath.endsWith('/') ? '' : '/';
 
-    return assets.where((x) => x.startsWith('$basePath$separator')).toList();
+      return assets.where((x) => x.startsWith('$basePath$separator')).toList();
+    } catch (_) {
+      return [];
+    }
   }
 
   static String _findLocaleFile(
@@ -43,7 +51,10 @@ class LocaleFileService {
     final file = _getFilepath(languageCode, basePath);
 
     if (!localizedFiles.contains(file) && languageCode.contains('_')) {
-      return _getFilepath(languageCode.split('_').first, basePath);
+      final baseFile = _getFilepath(languageCode.split('_').first, basePath);
+      if (localizedFiles.contains(baseFile)) {
+        return baseFile;
+      }
     }
 
     return file;

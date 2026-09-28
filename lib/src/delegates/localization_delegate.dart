@@ -31,7 +31,7 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
     final locale =
         LocaleService.findLocale(newLocale, supportedLocales) ?? fallbackLocale;
 
-    if (_currentLocale == locale) return;
+    if (_currentLocale == locale && !Localization.instance.isTranslationsEmpty) return;
 
     await _loadLocalizedContent(locale);
 
@@ -112,7 +112,11 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale newLocale) async {
-    if (currentLocale != newLocale) {
+    final resolvedLocale =
+        LocaleService.findLocale(newLocale, supportedLocales) ?? fallbackLocale;
+
+    if (currentLocale != resolvedLocale ||
+        Localization.instance.isTranslationsEmpty) {
       await changeLocale(newLocale);
     }
 
@@ -120,7 +124,10 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool isSupported(Locale? locale) => locale != null;
+  bool isSupported(Locale? locale) {
+    if (locale == null) return false;
+    return LocaleService.findLocale(locale, supportedLocales) != null;
+  }
 
   @override
   bool shouldReload(LocalizationsDelegate<Localization> old) => true;

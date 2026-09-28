@@ -14,6 +14,8 @@ dependencies:
   flutter_translate_fix:
     path: ../
 
+  cupertino_ui: any
+  material_ui: any
 flutter:
 
   uses-material-design: true

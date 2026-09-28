@@ -6,9 +6,11 @@ enum MissingTranslationStrategy { KEY, FALLBACK }
 class Localization {
   Localization._();
 
-  late Map<String, dynamic> _translations;
+  Map<String, dynamic> _translations = {};
 
   Map<String, dynamic>? _fallbackTranslations;
+
+  bool get isTranslationsEmpty => _translations.isEmpty;
 
   static Localization? _instance;
 
@@ -61,15 +63,16 @@ class Localization {
     if (keys.length > 1) {
       final firstKey = keys.first;
 
-      if (map.containsKey(firstKey) && map[firstKey] is! String) {
+      if (map.containsKey(firstKey) && map[firstKey] is Map) {
         return _getTranslation(
           key.substring(key.indexOf('.') + 1),
-          map[firstKey],
+          (map[firstKey] as Map).cast<String, dynamic>(),
         );
       }
     }
 
-    return map[key];
+    final value = map[key];
+    return value is String ? value : null;
   }
 
   String plural(String key, num value, {Map<String, dynamic>? args}) {
@@ -122,10 +125,10 @@ class Localization {
     if (keys.length > 1) {
       final firstKey = keys.first;
 
-      if (map.containsKey(firstKey) && map[firstKey] is! String) {
+      if (map.containsKey(firstKey) && map[firstKey] is Map) {
         return _getAllPluralForms(
           key.substring(key.indexOf('.') + 1),
-          map[firstKey],
+          (map[firstKey] as Map).cast<String, dynamic>(),
         );
       }
     }
@@ -133,7 +136,7 @@ class Localization {
     if (!map.containsKey(key) || map[key] is! Map) return null;
 
     final result = <String, String>{};
-    final pluralMap = map[key] as Map<String, dynamic>;
+    final pluralMap = (map[key] as Map).cast<String, dynamic>();
 
     for (final k in pluralMap.keys) {
       result[k] = pluralMap[k].toString();
