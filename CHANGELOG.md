@@ -18,3 +18,12 @@
 - Add `MissingTranslationStrategy` option when creating delegate.
   (By default it follows the same behavior as originally.
   You can change it to get the fallback values for missing translations)
+
+## [2.1.1]
+
+- Fix initial locale detection.
+
+## [2.1.2]
+
+- Fix issues with UI showing keys instead of translations.
+- Bump & support Flutter 3.47 in `example`.
